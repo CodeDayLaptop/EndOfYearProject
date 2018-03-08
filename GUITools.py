@@ -1,15 +1,20 @@
 # Author: Andrew Moore
 # A library with the purpose of simplifying the ability to add GUI objects. EX: Buttons
-
+from tkinter import *
 
 class button(object):
-    def __init__(self, win):
-        self.canvas = win
+    def __init__(self, win, text, command, height=10, width=10):
+        self.master = win.master  # Converts graphwin object to tkinter canvas
+        self.text = text
+        self.command = command
+        self.height = height
+        self.width = width
+        f = Frame(self.master, height=self.height, width=self.width)
+        f.pack_propagate(0)  # don't shrink
+        f.pack()
 
-    def __str__(self):
-        return "A button object"
+        def callback():
+            eval(self.command)
 
-    def pressed(self, mouseloc):
-        if mouseloc.GetX() >= self.x1 and mouseloc.GetX() <= self.x2 \
-                and mouseloc.GetY() <= self.Y1 and mouseloc.GetY() >= self.y2:
-            pass
+        b = Button(f, text=self.text, command=callback)  # Command = Thing to execute on click
+        b.pack(fill=BOTH, expand=1)
